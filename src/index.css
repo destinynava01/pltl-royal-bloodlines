@@ -1,0 +1,143 @@
+@import "tailwindcss";
+
+/*
+  The look: the royal archives. Deep burgundy velvet with a faint gold damask, panels like leather-bound record books,
+  gold lettering for titles and main buttons, and a crimson wax seal pressed on each panel. Family trees are drawn on
+  parchment. The token names match the other PLTL games so shared pieces keep working.
+*/
+@theme {
+  --color-board: #1c0b14;      /* the velvet */
+  --color-card: #2a1220;       /* record books */
+  --color-panel: #38182b;      /* inputs, rows inside panels */
+  --color-hover: #47203a;
+  --color-line: #5e3249;
+  --color-ink: #f7ead2;        /* cream */
+  --color-muted: #c9ae9f;
+  --color-accent: #e8b64c;     /* gold: main buttons, titles */
+  --color-accent-soft: #3d2a12;
+  --color-on-accent: #2a1206;
+  --color-spike: #f6d98b;      /* points */
+  --color-fire: #d1435b;       /* crimson: the seal, the end button */
+  --color-info: #f2c97d;
+  --color-ok: #7dd892;
+  --color-ok-soft: #173622;
+  --color-bad: #fb8a8a;
+  --color-bad-soft: #401a1f;
+  --color-warn: #fbbf24;
+  --color-warn-soft: #3a2c0c;
+  --font-display: "Cinzel", Georgia, serif;
+  --font-body: "Inter", system-ui, sans-serif;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--color-board);
+  color: var(--color-ink);
+}
+
+/* Velvet with a faint gold damask (diamonds and dots) and candlelight from above */
+.lab-bg {
+  background-color: var(--color-board);
+  background-image:
+    radial-gradient(ellipse at 50% -15%, rgb(232 182 76 / 0.16), transparent 55%),
+    radial-gradient(circle at 50% 50%, rgb(232 182 76 / 0.08) 2px, transparent 2.5px),
+    linear-gradient(45deg, transparent 47%, rgb(232 182 76 / 0.045) 47%, rgb(232 182 76 / 0.045) 53%, transparent 53%),
+    linear-gradient(-45deg, transparent 47%, rgb(232 182 76 / 0.045) 47%, rgb(232 182 76 / 0.045) 53%, transparent 53%);
+  background-size: auto, 44px 44px, 44px 44px, 44px 44px;
+  background-attachment: fixed;
+}
+
+/* A record book, with a gold edge and a crimson wax seal when "pinned" */
+.paper {
+  position: relative;
+  background: var(--color-card);
+  border: 1px solid var(--color-line);
+  box-shadow: inset 0 0 0 3px rgb(232 182 76 / 0.12), 0 14px 34px rgb(0 0 0 / 0.5);
+}
+.pinned::before {
+  content: "";
+  position: absolute;
+  top: -14px;
+  left: calc(50% - 15px);
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 35%, #e56a7d, #a3233a 60%, #7a1529);
+  box-shadow: 0 3px 6px rgb(0 0 0 / 0.45), inset 0 0 0 3px rgb(0 0 0 / 0.15);
+}
+.pinned::after {
+  content: "♛";
+  position: absolute;
+  top: -10px;
+  left: calc(50% - 8px);
+  width: 16px;
+  text-align: center;
+  font-size: 14px;
+  line-height: 22px;
+  color: rgb(255 225 225 / 0.75);
+}
+
+/* The "SEALED" stamp: a crimson stamp that pops in */
+.stamp {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-fire);
+  border: 3px double var(--color-fire);
+  border-radius: 8px;
+  padding: 0.1em 0.5em;
+  transform: rotate(-3deg);
+}
+@keyframes stamp-in {
+  0% { transform: rotate(-3deg) scale(1.8); opacity: 0; }
+  60% { transform: rotate(-3deg) scale(0.94); opacity: 1; }
+  100% { transform: rotate(-3deg) scale(1); opacity: 1; }
+}
+.stamp-in { animation: stamp-in 0.4s ease-out both; }
+
+/* A small gold plaque */
+.tag {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-on-accent);
+  background: linear-gradient(#f3cf78, #d29c32);
+  border-radius: 4px;
+  padding: 0.1em 0.6em;
+}
+
+/* Gold lettering */
+.gilded {
+  font-family: var(--font-display);
+  font-weight: 700;
+  background: linear-gradient(#fbe3a3, #e8b64c 55%, #b9862c);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* A wrong try: the panel shakes */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-3px); }
+}
+.shake { animation: shake 0.35s ease-in-out; }
+@keyframes pop {
+  0% { transform: scale(0.85); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+.pop { animation: pop 0.3s ease-out both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .stamp-in, .shake, .pop { animation: none; }
+}
+
+/* Bigger screens (projectors, big monitors): everything a little larger so it reads from the back of the room. */
+@media (min-width: 1600px) { html { font-size: 106.25%; } }
+@media (min-width: 1900px) { html { font-size: 112.5%; } }
