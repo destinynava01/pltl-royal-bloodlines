@@ -17,7 +17,7 @@ Rounds (the leader picks; each team gets its own houses and numbers):
    Xᴬ/Xᵃ), with "can't tell" when the tree really doesn't decide.
 4. **The heir's odds:** genetic counseling for the team's house: the chance a child (or a son) has the trait, the
    rule of multiplication (both of two children), and the rule of addition (has it or carries it).
-5. **Beyond Mendel** (optional): incomplete dominance (royal camellias), ABO blood types for a disputed heir, and a
+5. **Beyond Mendel:** incomplete dominance (royal camellias), ABO blood types for a disputed heir, and a
    dihybrid cross.
 
 Probabilities can be typed as a fraction (1/4), a decimal (0.25) or a percent (25%). The projector shows every

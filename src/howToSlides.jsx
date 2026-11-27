@@ -34,7 +34,7 @@ export const SLIDES = [
   },
   {
     title: 'The rounds',
-    text: 'Royal crosses (Punnett squares and a testcross), Read the bloodline (the inheritance pattern), Who carries it? (genotypes and carriers), The heir\'s odds (the product and sum rules), and Beyond Mendel (incomplete dominance, blood types and a dihybrid cross; optional).',
+    text: 'Royal crosses (Punnett squares and a testcross), Read the bloodline (the inheritance pattern), Who carries it? (genotypes and carriers), The heir\'s odds (the product and sum rules), and Beyond Mendel (incomplete dominance, blood types and a dihybrid cross).',
     art: (
       <Panel>
         <ol className="space-y-1 text-base">
@@ -42,7 +42,7 @@ export const SLIDES = [
           <li>🔍 <b>Read the bloodline</b></li>
           <li>🧬 <b>Who carries it?</b></li>
           <li>🍼 <b>The heir&apos;s odds</b></li>
-          <li>🌹 <b>Beyond Mendel</b> <span className="text-muted">(optional)</span></li>
+          <li>🌹 <b>Beyond Mendel</b></li>
         </ol>
       </Panel>
     ),
