@@ -239,7 +239,7 @@ function Task({ c, lead, busy, canReveal, onAnswer, onReveal }) {
       <div className="mt-4">
         {cur.kind === 'number' && (
           <label className="block">
-            <span className="mb-1 block text-xs font-bold text-muted">The chance (a fraction like 1/4, a decimal or a percent)</span>
+            <span className="mb-1 block text-xs font-bold text-muted">{cur.fixed ? 'Your answer (a fraction or decimal is fine)' : 'The chance (a fraction like 1/4, a decimal or a percent)'}</span>
             <input className={box} value={answer.number} placeholder="1/4" inputMode="text" autoComplete="off" spellCheck={false}
               onChange={(e) => setAnswer({ number: e.target.value })} />
           </label>
