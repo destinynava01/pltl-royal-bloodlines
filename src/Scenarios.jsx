@@ -62,6 +62,11 @@ function ScenarioForm({ game, draft, setDraft, children }) {
   const set = (patch) => setDraft({ ...draft, ...patch })
   const round = game.rounds.find((r) => r.id === draft.round)
   const step = round?.steps.find((s) => s.key === draft.step_key)
+  // Games whose steps have their own layout take reworded steps only; Spike's own questions are multiple choice
+  useEffect(() => {
+    if (game.fixed === 'none' && draft.mode === 'fixed') setDraft({ ...draft, mode: 'reword' })
+    else if (game.fixed === 'choice' && draft.mode === 'fixed' && draft.answer.kind !== 'choice') setDraft({ ...draft, answer: { ...draft.answer, kind: 'choice' } })
+  }, [game.fixed, draft, setDraft])
   const insert = (key) => {
     const el = templateRef.current
     const at = el ? el.selectionStart : draft.template.length
@@ -79,7 +84,7 @@ function ScenarioForm({ game, draft, setDraft, children }) {
             {game.rounds.map((r) => <option key={r.id} value={r.id}>{r.title}</option>)}
           </select>
         </label>
-        {round && (
+        {round && game.fixed !== 'none' && (
           <fieldset>
             <legend className={labelText}>What kind of scenario?</legend>
             <div className="grid gap-2 sm:grid-cols-2">
@@ -87,7 +92,7 @@ function ScenarioForm({ game, draft, setDraft, children }) {
                 <span className="block font-bold">🎲 Reword a game step</span><span className="text-xs text-muted">Your story around the game&apos;s own generated numbers and answer.</span>
               </button>
               <button type="button" onClick={() => set({ mode: 'fixed' })} className={chip(draft.mode === 'fixed')}>
-                <span className="block font-bold">✍️ My own question</span><span className="text-xs text-muted">A question you write with its answer (no generated numbers).</span>
+                <span className="block font-bold">✍️ My own question</span><span className="text-xs text-muted">A question you write with its answer (no generated numbers){game.fixed === 'choice' ? ': multiple choice in this game' : ''}.</span>
               </button>
             </div>
           </fieldset>
@@ -118,13 +123,13 @@ function ScenarioForm({ game, draft, setDraft, children }) {
               )}
               <textarea id="scenario-template" ref={templateRef} className={`${field} min-h-28`} value={draft.template} maxLength={1500} onChange={(e) => set({ template: e.target.value })}
                 placeholder={draft.mode === 'reword' ? 'Tap a slot above to add generated content, then write your story around it.' : 'Write your question.'} />
-              {draft.mode === 'reword' && <p className="mt-1 text-xs text-muted">Slots look like {'{parent}'} and are filled with each team&apos;s own content. The game&apos;s answer and checking stay the same.</p>}
+              {draft.mode === 'reword' && <p className="mt-1 text-xs text-muted">Slots look like {'{parent}'} and are filled with each team&apos;s own content. The game&apos;s answer and checking stay the same.{game.story ? ' In this game your scenario shows as a story card with the step (its own instructions stay).' : ''}</p>}
             </div>
             {draft.mode === 'fixed' && (
               <fieldset className="rounded-lg border border-line p-3">
                 <legend className="px-1 text-sm font-bold">The answer</legend>
                 <div className="flex gap-2">
-                  {[['number', 'A number'], ['choice', 'Multiple choice']].map(([id, name]) => (
+                  {[['number', 'A number'], ['choice', 'Multiple choice']].filter(([id]) => game.fixed !== 'choice' || id === 'choice').map(([id, name]) => (
                     <button key={id} type="button" onClick={() => set({ answer: { ...draft.answer, kind: id } })}
                       className={`rounded-md px-3 py-1 text-sm font-bold ${draft.answer.kind === id ? 'bg-accent text-on-accent' : 'bg-panel'}`}>{name}</button>
                   ))}
@@ -232,7 +237,7 @@ export default function ScenarioSubmit() {
       {error && <p className="text-center text-bad">{error}</p>}
       {!game && !error && <p className="text-center text-muted">Loading…</p>}
       {game && (
-        <section className="paper rounded-2xl p-5">
+        <section className="paper border border-line bg-card rounded-2xl p-5">
           <ScenarioForm game={game} draft={draft} setDraft={setDraft}>
             <label className="block"><span className={labelText}>Your name</span>
               <input className={field} value={name} maxLength={80} onChange={(e) => setName(e.target.value)} placeholder="Your name" />
@@ -287,7 +292,7 @@ function SignIn() {
   }
   return (
     <Page title="Scenario review" wide={false}>
-      <section className="paper rounded-2xl p-6">
+      <section className="paper border border-line bg-card rounded-2xl p-6">
         {!sent ? (
           <form onSubmit={sendLink} className="space-y-4">
             <p className="text-center text-muted">Reviewers sign in with their UTRGV email (the same reviewers as the question review). We&apos;ll email a sign-in link, so there&apos;s no password.</p>
@@ -332,7 +337,7 @@ function ReviewList({ email }) {
       </div>
       {(error || catalogError) && <p className="rounded-lg bg-bad-soft px-3 py-2 text-bad">{error || catalogError}</p>}
       {!rows && !error && <p className="text-muted">Loading…</p>}
-      {rows?.length === 0 && <p className="paper rounded-xl p-4 text-muted">Nothing {status} right now.</p>}
+      {rows?.length === 0 && <p className="paper border border-line bg-card rounded-xl p-4 text-muted">Nothing {status} right now.</p>}
       <div className="space-y-4">{game && rows?.map((row) => <ScenarioCard key={row.id} row={row} game={game} onDone={done} />)}</div>
     </Page>
   )
@@ -352,7 +357,7 @@ function ScenarioCard({ row, game, onDone }) {
     try { await review({ ...payload, scenario_id: row.id }, fallback); setEditing(false); onDone() } catch (e) { setError(e.message) } finally { setBusy(false) }
   }
   return (
-    <article className="paper space-y-3 rounded-xl p-4">
+    <article className="paper border border-line bg-card space-y-3 rounded-xl p-4">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
         <p className="font-bold">{round?.title ?? row.round} <span className="ml-1 rounded-md bg-accent-soft px-2 py-0.5 text-xs font-bold text-accent">{row.mode === 'fixed' ? 'their own question' : `rewords: ${stepLabel ?? row.step_key}`}</span></p>
         <span className="text-xs text-muted">By {row.submitter_name}{row.course ? ` · ${row.course}` : ''}{row.professor ? ` · ${row.professor}` : ''} · {new Date(row.created_at).toLocaleDateString()}</span>
