@@ -9,10 +9,10 @@ export default function Punnett({ top, left, filled = false, className = '' }) {
     <div className={className}>
       <div className="mx-auto grid max-w-[13rem] grid-cols-3 gap-1">
         <div />
-        {top.map((g, i) => <div key={`t${i}`} className="flex h-9 items-center justify-center font-display text-xl font-bold text-accent">{g}</div>)}
+        {top.map((g, i) => <div key={`t${i}`} className="flex h-9 items-center justify-center font-sans text-xl font-bold text-accent">{g}</div>)}
         {left.map((g, r) => (
           <div key={`r${r}`} className="contents">
-            <div className="flex h-11 items-center justify-center font-display text-xl font-bold text-accent">{g}</div>
+            <div className="flex h-11 items-center justify-center font-sans text-xl font-bold text-accent">{g}</div>
             {top.map((t, c) => (
               <div key={c} className={`flex h-11 items-center justify-center rounded-md border border-line text-lg font-bold ${filled ? 'bg-panel text-ink' : 'border-dashed bg-card text-muted'}`}>
                 {filled ? combine(g, t) : '?'}

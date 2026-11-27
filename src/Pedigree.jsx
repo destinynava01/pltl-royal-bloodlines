@@ -37,7 +37,7 @@ export default function Pedigree({ house, marks = [], names = true, className = 
       {house.seal && (
         <g>
           <rect x={W / 2 - 120} y="8" width="240" height="24" rx="12" fill={SHADE} />
-          <text x={W / 2} y="25" textAnchor="middle" fontSize="13" fontWeight="700" fill="#f8e7b0" fontFamily="Cinzel, serif">{house.seal}</text>
+          <text x={W / 2} y="25" textAnchor="middle" fontSize="13" fontWeight="700" fill="#f8e7b0" fontFamily="Playfair Display, Georgia, serif">{house.seal}</text>
         </g>
       )}
       {/* couples and their children */}
