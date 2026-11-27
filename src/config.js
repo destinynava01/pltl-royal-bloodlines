@@ -31,3 +31,7 @@ export function describeAnswer(cur, a = {}) {
   if (cur.kind === 'number') return String(a.number ?? '')
   return (cur.fields ?? []).map((f) => `${cur.fields.length > 1 ? `${f.label}: ` : ''}${f.choices.find((c) => c.id === a.picks?.[f.key])?.text ?? '?'}`).join(' · ')
 }
+
+// Leader scenarios (the /scenarios and /review pages): this game's id, and the pages' background
+export const SCENARIO_GAME = 'bloodlines'
+export const PAGE_BG = 'lab-bg'

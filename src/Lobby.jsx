@@ -3,8 +3,7 @@ import { QRCodeSVG } from 'qrcode.react'
 import HowToPlay from './HowToPlay'
 import { SLIDES as HOW_TO_SLIDES } from './howToSlides'
 import { callFunction, rbGame, watchGame } from './api'
-// Where leaders write scenarios (on the Jeopardy site, next to the question review)
-const SCENARIO_PAGE = 'https://biology-jeopardy.vercel.app/scenarios'
+// Where leaders write scenarios: this game's own page
 import { DURATIONS, HUB_URL, MAX_TEAMS, MIN_TEAMS, ROUNDS, SITE_NAME, TEAM_COLORS } from './config'
 import { saveSession } from './session'
 import { Button, Label, Paper } from './ui'
@@ -239,7 +238,7 @@ function ScenarioToggle({ game, on, onChange }) {
           <span className="block text-muted">Up to one step per round gets a leader&apos;s wording (still with each team&apos;s own numbers), or a leader&apos;s own question.</span>
         </span>
       </label>
-      <a href={`${SCENARIO_PAGE}?game=bloodlines`} target="_blank" rel="noreferrer" className="mt-1 inline-block text-xs font-bold text-accent hover:underline">✍️ Write a scenario for this game</a>
+      <a href="/scenarios" target="_blank" rel="noreferrer" className="mt-1 inline-block text-xs font-bold text-accent hover:underline">✍️ Write a scenario for this game</a>
     </div>
   )
 }
